@@ -14,10 +14,13 @@ from pathlib import Path
 import os
 import cloudinary
 import cloudinary.uploader
+import dj_database_url
 import cloudinary.api
+import django_heroku
+from decouple import config,Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,9 +30,36 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7kr!=rot!67x=&@+lqd0b-3%4g_f^1+ku0z6jl%-&slpame)&5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+MODE=config("MODE", default="dev")
+SECRET_KEY = config('SECRET_KEY')
+# DEBUG = os.environ.get('DEBUG', True)
+# development
+if config('MODE')=="dev":
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql_psycopg2',
+           'NAME': config('DB_NAME'),
+           'USER': config('DB_USER'),
+           'PASSWORD': config('DB_PASSWORD'),
+           'HOST': config('DB_HOST'),
+           'PORT': '',
+       }
+       
+   }
+   # production
+else:
+   DATABASES = {
+       'default': dj_database_url.config(
+           default=config('DATABASE_URL')
+       )
+   }
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -74,6 +104,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -94,12 +125,12 @@ DATABASES = {
     }
 }
 
-# adding config
-cloudinary.config( 
-  cloud_name = "moringa-sch", 
-  api_key = "264341418612533", 
-  api_secret = "UP7kUjAjNddSCOpDUArIurQ1iu8" 
-)
+# # adding config
+# cloudinary.config( 
+#   cloud_name = "moringa-sch", 
+#   api_key = "264341418612533", 
+#   api_secret = "UP7kUjAjNddSCOpDUArIurQ1iu8" 
+# )
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -143,7 +174,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django_heroku.settings(locals())
