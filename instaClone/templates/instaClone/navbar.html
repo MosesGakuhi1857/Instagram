@@ -1,0 +1,29 @@
+{% load static %} {% block content %}
+<div class="navbar fixed-top ">
+    <nav class="container">
+        <span class="navbar-brand mb-0 h1">
+        
+
+          <div class='instalogo'>
+            <a class='' href='/'><i class="fa fa-instagram fa-2x"></i></a>
+            <!-- <a class='vl' href='/'></a> -->
+            <a href='/'>Instagram</a>
+            
+        </div>
+      </span>
+        <form class="mb-0 h1 ml-auto mr-auto " id="searchform" action="{% url 'search' %}">
+            <input name="search_user" autocomplete="off" id="searching" class="form-control d-none d-md-block" placeholder="Search">
+            <i class="spinner "></i>
+        </form>
+        <span class="pull-right">
+
+            <div class='contact_icons'>
+                <a class='profile' href="{% url 'search' %}"><i class="fa fas fa-search"></i></a>
+                <a class='profile' href='/'><i class="fa fa-user"></i></a>
+                <a class="D-block mx-auto" href="{% url 'logout' %}">logout<i class="fa-sign-out-alt"></i></a>
+
+            </div>
+        </span>
+    </nav>
+</div>
+{% endblock %}
