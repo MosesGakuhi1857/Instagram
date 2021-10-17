@@ -18,7 +18,7 @@ This is a clone of the website for the Instagram app where users share their  im
   
 ## Setup and installations
 * Fork the data .
-* git clone the gallery repo.
+* git clone the instagram repo.
 * Activate a virtual environment on terminal: `source virtual/bin/activate`
 * Install all the requirements found in requirements file.
 * On your terminal run `python3.8 manage.py runserver`
@@ -34,7 +34,7 @@ This is a clone of the website for the Instagram app where users share their  im
 
 #### Clone the Repo 
 ```bash
-git clone 
+git clone https://github.com/MosesGakuhi1857/Instagram.git
 ```
         
 ## Technologies Used
