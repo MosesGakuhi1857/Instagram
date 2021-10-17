@@ -193,3 +193,7 @@ body {
 .card:hover #overlay {
     display: block;
 }
+
+.help-block{
+    display: none;
+}
